@@ -1,0 +1,32 @@
+.hv-center {
+    margin: 15% 35%;
+    text-align: center;
+}
+
+#avatar img {
+    width: 10%;
+    height: 10%;
+}
+
+#avatar ul {
+    margin-left:1.25%;
+    display: none;
+    position: absolute;
+    background-color: transparent;
+}
+
+.stage img {
+    width: 15%;
+    height: 25%;
+    margin-left: 40%;
+}
+
+#editForm {
+    margin-top: 0;
+}
+
+.editGender {
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    display: inline-block;
+}
