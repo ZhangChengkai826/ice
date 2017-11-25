@@ -14,8 +14,19 @@
     <img src="{% static 'img/avatar.jpg' %}">
     <ul class="text-muted small list-unstyled" >
         <li><strong>USERNAME</strong> {{ username }}</li>
+        <li><strong>FIRST NAME</strong> {{ fName }}</li>
+        <li><strong>LAST NAME</strong> {{ lName }}</li>
+        <li><strong>GENDER</strong> {{ gender }}</li>
+        <li><strong>BIRTHDAY</strong> {{ birY }} - {{ birM }} - {{ birD }}</li>
+        <li><strong>HOBBIES</strong> {{ hobbies }}</li>
         <li><button class="btn" id="editBtn">Edit</button></li>
     </ul>
+</div>
+
+<div id="memory" style="display: none" class="hv-center">
+    <h1><strong>My Memory</strong></h1>
+    <h2 class="text-muted small">Sorry...This Module is still developing</h2>
+    <button type="button" class="btn" id="memoReturnBtn">RETURN</button>
 </div>
 
 <div id="mainPage" style="display: none">
@@ -58,6 +69,7 @@
 
 <form role="form" class="hv-center" id="editForm" method="post" style="display: none">
     {% csrf_token %}
+    <input type="hidden" id="username_e" name="username_e" />
     <div class="form-group">
         <label for="fName">FIRST NAME</label>
         <input type="text" class="form-control" id="fName" name="fName" />
@@ -67,18 +79,18 @@
         <input type="text" class="form-control" id="lName" name="lName" />
     </div>
     <div class="form-group">
-        <label class="editGender">MALE<input type="radio" class="form-control" name="gender" value="MALE"/></label>
-        <label class="editGender">FEMALE<input type="radio" class="form-control" name="gender" value="FEMALE"/></label>
-        <label class="editGender">SECRET<input type="radio" class="form-control" name="gender" value="SECRET"/></label>
+        <label class="editGender">MALE<input type="radio" class="form-control" name="gender" value="MALE" id="genderM" /></label>
+        <label class="editGender">FEMALE<input type="radio" class="form-control" name="gender" value="FEMALE" id="genderW" /></label>
+        <label class="editGender">SECRET<input type="radio" class="form-control" name="gender" value="SECRET" id="genderS" /></label>
     </div>
     <div class="form-group">
         <label>BIRTHDAY
-            <input type="date" class="form-control" name="birthday"/>
+            <input id="birthday" type="date" class="form-control" name="birthday"/>
         </label>
     </div>
     <div class="form-group">
         <label>HOBBIES
-            <input type="text" class="form-control" name="hobbies"/>
+            <input type="text" class="form-control" name="hobbies" id="hobbies"/>
         </label>
     </div>
     <button type="button" class="btn" id="editReturnBtn">RETURN</button>
@@ -147,25 +159,65 @@
             $("#avatar ul").toggle(1000)
         })
     });
+
+    // Open & close Memory SubPage
     $(document).ready(function(){
         $(".stage img").click(function() {
-            $("#mainPage").hide(1000, function () {
-
-            })
+            $("#mainPage").hide(1000);
+            $("#memory").show(1000);
         })
     });
     $(document).ready(function(){
+        $("#memoReturnBtn").click(function() {
+            $("#memory").hide(1000);
+            $("#mainPage").show(1000);
+        })
+    });
+
+    $(document).ready(function(){
         $("#editBtn").click(function() {
             $("#mainPage").hide(1000);
-            $("#editForm").show(1000)
+            $("#editForm").show(1000);
+            $("#username_e").val("{{ username }}");
+            $("#fName").val("{{ fName }}");
+            $("#lName").val("{{ lName }}");
+            setEditGender();
+            setEditBir();
+            $("#hobbies").val("{{ hobbies }}");
         })
     })
+    function setEditGender() {
+        var gender = "{{ gender }}";
+        if (gender === "MALE"){
+            $("#genderM").attr("checked", true);
+        }
+        else if (gender === "FEMALE"){
+            $("#genderW").attr("checked", true);
+        }
+        else {
+            $("#genderS").attr("checked", true);
+        }
+    }
+    function setEditBir() {
+        if ("{{ birM }}".length === 1){
+            var birM = "0"+"{{ birM }}";
+        }
+
+        if ("{{ birD }}".length === 1){
+            var birD = "0"+"{{ birD }}";
+        }
+        else {
+            var birD = {{ birD }};
+        }
+
+        $("#birthday").val("{{ birY }}-"+birM+"-"+birD);
+    }
+
     $(document).ready(function(){
         $("#editReturnBtn").click(function(){
             $("#editForm").hide(1000, $("#mainPage").show(1000))
         })
     });
-
 
 </script>
 </body>

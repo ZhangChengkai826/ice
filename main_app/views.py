@@ -8,6 +8,13 @@ def index(request):
     postData = request.POST
     fill_dict = {
         'username': None,
+        'fName': None,
+        'lName': None,
+        'gender': None,
+        'birY': None,
+        'birM': None,
+        'birD': None,
+        'hobbies': None,
         'repeatUName': 0,
         'noMatchUName': 0,
         'wrongPwd': 0,
@@ -32,6 +39,13 @@ def index(request):
         # Successfully log in
         fill_dict['successLogin'] = 1
         fill_dict['username'] = targetUser.username
+        fill_dict['fName'] = targetUser.fName
+        fill_dict['lName'] = targetUser.lName
+        fill_dict['gender'] = targetUser.gender
+        fill_dict['birY'] = targetUser.birthdayY
+        fill_dict['birM'] = targetUser.birthdayM
+        fill_dict['birD'] = targetUser.birthdayD
+        fill_dict['hobbies'] = targetUser.hobbies
         return render(request, 'index.html', fill_dict)
 
     # Handle sign up procedure
@@ -54,5 +68,43 @@ def index(request):
             hobbies="N/A"
         )
         appUser.save()
+        return render(request, 'index.html', fill_dict)
+
+    # Handle editProfile procedure
+    if 'username_e' in postData:
+        username_e = postData['username_e']
+        fName = postData['fName']
+        lName = postData['lName']
+        gender = postData['gender']
+        birthday = str(postData['birthday']).split('-')
+        birY = birthday[0]
+        birM = birthday[1]
+        birD = birthday[2]
+        hobbies = postData['hobbies']
+
+        targetUser = models.APPUser.objects.get(username=username_e)
+        targetUser.fName = fName
+        targetUser.lName = lName
+        targetUser.gender = gender
+        targetUser.birthdayY = birY
+        targetUser.birthdayM = birM
+        targetUser.birthdayD = birD
+        targetUser.hobbies = hobbies
+
+        targetUser.save()
+        # Make sure the user is still logging in after editing the profile
+        fill_dict['successLogin'] = 1
+        # And the info are properly set
+        fill_dict['successLogin'] = 1
+        fill_dict['username'] = targetUser.username
+        fill_dict['fName'] = targetUser.fName
+        fill_dict['lName'] = targetUser.lName
+        fill_dict['gender'] = targetUser.gender
+        fill_dict['birY'] = targetUser.birthdayY
+        fill_dict['birM'] = targetUser.birthdayM
+        fill_dict['birD'] = targetUser.birthdayD
+        fill_dict['hobbies'] = targetUser.hobbies
+
+        return render(request, 'index.html', fill_dict)
 
     return render(request, 'index.html', fill_dict)
