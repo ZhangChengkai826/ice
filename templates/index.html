@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css" />
-    <title>ICE</title>
+    <link href='http://fonts.font.im/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+<link href='http://fonts.font.im/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>    <title>ICE</title>
 </head>
 
 <body onload="init()">
 
 <div id="bg">
-    <img src="{% static 'img/bgBegin.jpg' %}" style="display: none">
-    <video src="{% static 'img/backgroundMvi.mp4' %}" autoplay></video>
+    <video id="bgVideo" src="{% static 'img/bg2.mp4' %}" onended="showMainPageAfterPlay()"></video>
 </div>
 
 <div id="avatar" style="display: none">
@@ -40,7 +40,7 @@
     </div>
 </div>
 
-<form role="form" class="hv-center" id="loginForm" method="post" onsubmit="return check()">
+<form role="form" class="hv-center" id="loginForm" method="post" onsubmit="return check()" style="display: none;">
     {% csrf_token %}
     <div class="form-group">
         <label for="username">USERNAME</label>
@@ -84,9 +84,9 @@
         <input type="text" class="form-control" id="lName" name="lName" />
     </div>
     <div class="form-group">
-        <label class="editGender">MALE<input type="radio" class="form-control" name="gender" value="MALE" id="genderM" /></label>
-        <label class="editGender">FEMALE<input type="radio" class="form-control" name="gender" value="FEMALE" id="genderW" /></label>
-        <label class="editGender">SECRET<input type="radio" class="form-control" name="gender" value="SECRET" id="genderS" /></label>
+        <label class="editGender">MALE<input style="background-color: transparent"  type="radio" class="form-control" name="gender" value="MALE" id="genderM" /></label>
+        <label class="editGender">FEMALE<input style="background-color: transparent"  type="radio" class="form-control" name="gender" value="FEMALE" id="genderW" /></label>
+        <label class="editGender">SECRET<input style="background-color: transparent"  type="radio" class="form-control" name="gender" value="SECRET" id="genderS" /></label>
     </div>
     <div class="form-group">
         <label>BIRTHDAY
@@ -103,19 +103,26 @@
 </form>
 
 <script src="{% static 'js/bootstrap.js' %}"></script>
-<script src="{% static 'js/jquery-slim.min.js' %}"></script>
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script>
+    // Go to Signup form
     $(document).ready(function(){
         $("#signUpBtn").click(function(){
-            $("#loginForm").hide(1000, $("#signupForm").show(1000))
+            $("#loginForm").hide(1000);
+            $("#signupForm").show(1000)
         })
     });
+
+    // From Signup form to Login form
     $(document).ready(function(){
         $("#returnBtn").click(function(){
-            $("#signupForm").hide(1000, $("#loginForm").show(1000))
+            $("#signupForm").hide(1000);
+            $("#loginForm").show(1000)
         })
     });
+
+    // Check the login form
     function check() {
         if ($("#username").val() === ""){
             alert("Please enter your username!");
@@ -127,6 +134,8 @@
         }
         return true;
     }
+
+    // Check the signup form
     function check_s() {
         if ($("#username_s").val() === ""){
             alert("Please specify your username!");
@@ -142,26 +151,39 @@
         }
         return true;
     }
+
+    // When loading the page, call this
     function init() {
         if (Boolean({{ repeatUName }}) === true){
-            $("#loginForm").hide(1000, $("#signupForm").show(1000))
+            $("#signupForm").show(1000);
             alert("This username has been registered!")
         }
         if (Boolean({{ noMatchUName }}) === true){
+            $("#loginForm").show(1000);
             alert("No matching username found!")
         }
         if (Boolean({{ wrongPwd }}) === true){
+            $("#loginForm").show(1000);
             alert("Wrong password, please try again!")
         }
-        if (Boolean({{ successLogin }}) === true){
-            $("#loginForm").hide(1000);
-            $("#avatar").show(1000);
-            $("#mainPage").show(1000);
+        if (Boolean({{ successLogin }}) === true) {
+            document.getElementById("bgVideo").play();
+        }
+        if (Boolean({{ openLogin }}) === true) {
+            $("#loginForm").show(1000);
         }
     }
+
+    // When video end, call this.
+    function showMainPageAfterPlay() {
+        $("#avatar").show(1000);
+        $("#mainPage").show(1000)
+    }
+
+    // open & close user info
     $(document).ready(function(){
         $("#avatar img").click(function() {
-            $("#avatar ul").toggle(1000)
+            $("#avatar ul").slideToggle(1000)
         })
     });
 
@@ -179,6 +201,7 @@
         })
     });
 
+    // EditForm helper functions
     $(document).ready(function(){
         $("#editBtn").click(function() {
             $("#mainPage").hide(1000);
@@ -218,9 +241,11 @@
         $("#birthday").val("{{ birY }}-"+birM+"-"+birD);
     }
 
+    // From editForm to MainPage
     $(document).ready(function(){
         $("#editReturnBtn").click(function(){
-            $("#editForm").hide(1000, $("#mainPage").show(1000))
+            $("#editForm").hide(1000);
+            $("#mainPage").show(1000)
         })
     });
 

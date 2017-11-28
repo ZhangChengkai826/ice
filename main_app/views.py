@@ -19,6 +19,7 @@ def index(request):
         'noMatchUName': 0,
         'wrongPwd': 0,
         'successLogin': 0,
+        'openLogin': 1
     }
 
     # Handle log in procedure
@@ -46,6 +47,8 @@ def index(request):
         fill_dict['birM'] = targetUser.birthdayM
         fill_dict['birD'] = targetUser.birthdayD
         fill_dict['hobbies'] = targetUser.hobbies
+
+        fill_dict['openLogin'] = 0
         return render(request, 'index.html', fill_dict)
 
     # Handle sign up procedure
@@ -77,9 +80,12 @@ def index(request):
         lName = postData['lName']
         gender = postData['gender']
         birthday = str(postData['birthday']).split('-')
-        birY = birthday[0]
-        birM = birthday[1]
-        birD = birthday[2]
+        if len(birthday) < 3:
+            birD = birM = birY = 0
+        else:
+            birY = birthday[0]
+            birM = birthday[1]
+            birD = birthday[2]
         hobbies = postData['hobbies']
 
         targetUser = models.APPUser.objects.get(username=username_e)
@@ -95,7 +101,6 @@ def index(request):
         # Make sure the user is still logging in after editing the profile
         fill_dict['successLogin'] = 1
         # And the info are properly set
-        fill_dict['successLogin'] = 1
         fill_dict['username'] = targetUser.username
         fill_dict['fName'] = targetUser.fName
         fill_dict['lName'] = targetUser.lName
@@ -104,6 +109,8 @@ def index(request):
         fill_dict['birM'] = targetUser.birthdayM
         fill_dict['birD'] = targetUser.birthdayD
         fill_dict['hobbies'] = targetUser.hobbies
+
+        fill_dict['openLogin'] = 0
 
         return render(request, 'index.html', fill_dict)
 
