@@ -42,6 +42,8 @@
 
 <form role="form" class="hv-center" id="loginForm" method="post" onsubmit="return check()" style="display: none;">
     {% csrf_token %}
+    <img src="{% static 'img/logo.png' %}">
+    <h1>往昔回忆·ICE</h1>
     <div class="form-group">
         <label for="username">USERNAME</label>
         <input type="text" class="form-control" id="username" name="username" />

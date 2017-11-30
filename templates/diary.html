@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        {% load staticfiles %}
+		<meta charset=UTF-8>
+		<title>My Diary</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'css/diary.css' %}" type="text/css" />
+    </head>
+	<body id="background-container" style="background-image: {% static 'img/bgDiary0.jpg' %}">
+		
+		<!--这里做了一个导航栏-->
+		<div id="top-fix-bar">
+			<!--logo-->
+			<img src="{% static 'img/logo.png' %}" id="top-fix-logo">
+			<!--横向列表-->
+			<div id="top-fix-container">
+				<ul id="top-fix-inner">
+					<li class="navigation">
+						<a href="主页.html">
+							<span>主页</span>
+						</a>
+					</li>
+					<li class="navigation">
+						<a href="照片墙.html">
+							<span>照片墙</span>
+						</a>
+					</li>
+					<li class="navigation">
+						<a href="签到墙.html">
+							<span>签到墙</span>
+						</a>
+					</li>
+					<li class="navigation">
+						<a href="故事墙.html">
+							<span>故事墙</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+		<!--这里是故事板块-->
+		<div id="blog" style="background-image: {% static 'img/bgDiary1.jpg' %}">
+			<!--后台在form标签中做一个action把提交的日记收集到数据库中,用户页面跳转到故事列表.html-->
+			<form>
+				<!--输入标题-->
+				<div id="blog-input-title">
+					<input id="input" type="text" placeholder="点击我，创建一个新标题哦" >
+				</div>
+				<!--编辑故事内容-->
+				<div id="blog-editor">
+					<textarea  placeholder="编辑故事内容" id="blog-editor-one">
+					</textarea> 
+					<br/>
+					<input type="image" src="{% static 'img/submit.jpg' %}" id="blog-editor-two">
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

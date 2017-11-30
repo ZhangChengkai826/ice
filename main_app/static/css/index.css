@@ -1,5 +1,6 @@
 .hv-center {
     margin: 15% 35%;
+    margin-top: 10%;
     text-align: center;
 }
 
@@ -58,6 +59,12 @@
 
 #loginForm {
     z-index: 1;
+}
+
+#loginForm h1{
+    color: lightgray;
+    text-decoration: underline;
+    font-weight: 600;
 }
 
 form label {
