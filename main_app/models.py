@@ -15,3 +15,11 @@ class APPUser(models.Model):
 
     def __str__(self):
         return self.username
+
+class Diary(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.CharField(max_length=2047)
+    author = models.ForeignKey(APPUser, related_name="diaries")
+
+    def __str__(self):
+        return self.title

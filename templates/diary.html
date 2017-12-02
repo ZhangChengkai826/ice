@@ -6,9 +6,29 @@
 		<title>My Diary</title>
         <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
         <link rel="stylesheet" href="{% static 'css/diary.css' %}" type="text/css" />
+        <style type="text/css">
+            body{
+                background-image: url({% static 'img/bgDiary0.jpg' %});
+                background-repeat: no-repeat;
+                background-size: 100%;
+            }
+            #blog{
+                background-image: url({% static 'img/bgDiary1.jpg' %});
+            }
+        </style>
     </head>
-	<body id="background-container" style="background-image: {% static 'img/bgDiary0.jpg' %}">
-		
+	<body id="background-container">
+
+        <div id="allDiary" style="display: none">
+            {% for d in diaries %}
+                <div class="hv-center">
+                    <h3>{{ d.title }}</h3>
+                    <p>{{ d.content }}</p>
+                </div>
+            {% endfor %}
+            <button class="btn" id="returnInputs">RETURN</button>
+        </div>
+
 		<!--这里做了一个导航栏-->
 		<div id="top-fix-bar">
 			<!--logo-->
@@ -17,44 +37,58 @@
 			<div id="top-fix-container">
 				<ul id="top-fix-inner">
 					<li class="navigation">
-						<a href="主页.html">
-							<span>主页</span>
+						<a href="{% url 'main_app_diary' %}?usn={{ username }}&all=1">
+							<span>查看所有日记</span>
 						</a>
-					</li>
-					<li class="navigation">
-						<a href="照片墙.html">
-							<span>照片墙</span>
-						</a>
-					</li>
-					<li class="navigation">
-						<a href="签到墙.html">
-							<span>签到墙</span>
-						</a>
-					</li>
-					<li class="navigation">
-						<a href="故事墙.html">
-							<span>故事墙</span>
+                        <a href="{% url 'main_app_index' %}?login=1&usn={{ username }}">
+							<span>返回</span>
 						</a>
 					</li>
 				</ul>
 			</div>
+        </div>
 
 		<!--这里是故事板块-->
-		<div id="blog" style="background-image: {% static 'img/bgDiary1.jpg' %}">
+		<div id="blog" style="z-index: 50;">
 			<!--后台在form标签中做一个action把提交的日记收集到数据库中,用户页面跳转到故事列表.html-->
-			<form>
+			<form method="post">
+                {% csrf_token %}
 				<!--输入标题-->
+                <input type="hidden" name="author" value="{{ username }}">
 				<div id="blog-input-title">
-					<input id="input" type="text" placeholder="点击我，创建一个新标题哦" >
+					<input id="input" type="text" placeholder="点击我，创建一个新标题哦" name="title">
 				</div>
 				<!--编辑故事内容-->
 				<div id="blog-editor">
-					<textarea  placeholder="编辑故事内容" id="blog-editor-one">
-					</textarea> 
+					<textarea placeholder="编辑故事内容" id="blog-editor-one" name="content"></textarea>
 					<br/>
-					<input type="image" src="{% static 'img/submit.jpg' %}" id="blog-editor-two">
+                    <button style="border-width: 0; background-color: transparent;" id="blog-editor-two" type="submit">
+                        <input type="image" src="{% static 'img/submit.jpg' %}">
+                    </button>
 				</div>
 			</form>
 		</div>
-	</body>
+
+        <script src="{% static 'js/bootstrap.js' %}"></script>
+        <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+
+        <script>
+            if(Boolean({{ noticeSubmit }}) === true) {
+                alert("Submit successfully!")
+            }
+            if(Boolean({{ hideInputs }}) === true) {
+                $("#top-fix-bar").hide(1000);
+                $("#blog").hide(1000);
+                $("#allDiary").show(1000);
+            }
+            $(document).ready(function(){
+                $("#returnInputs").click(function(){
+                $("#allDiary").hide(1000);
+                $("#top-fix-bar").show(1000);
+                $("#blog").show(1000)
+            })
+    });
+        </script>
+    </body>
 </html>

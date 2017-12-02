@@ -16,7 +16,7 @@
 </div>
 
 <div id="avatar" style="display: none">
-    <img src="{% static 'img/avatar.jpg' %}">
+    <img src="{% static 'img/avatar.png' %}">
     <ul class="text-muted small list-unstyled" >
         <li><strong>USERNAME</strong> {{ username }}</li>
         <li><strong>FIRST NAME</strong> {{ fName }}</li>
@@ -28,15 +28,10 @@
     </ul>
 </div>
 
-<div id="memory" style="display: none" class="hv-center">
-    <h1><strong>My Memory</strong></h1>
-    <h2 class="text-muted small">Sorry...This Module is still developing</h2>
-    <button type="button" class="btn" id="memoReturnBtn">RETURN</button>
-</div>
-
 <div id="mainPage" style="display: none">
     <div class="stage">
-        <img src="{% static 'img/stage.png' %}">
+        <a href="{% url 'main_app_diary' %}?usn={{ username }}"><img id="diaryICO" src="{% static 'img/diaryICO.png' %}"></a>
+        <img id="photoICO" src="{% static 'img/photoICO.png' %}">
     </div>
 </div>
 
@@ -186,20 +181,6 @@
     $(document).ready(function(){
         $("#avatar img").click(function() {
             $("#avatar ul").slideToggle(1000)
-        })
-    });
-
-    // Open & close Memory SubPage
-    $(document).ready(function(){
-        $(".stage img").click(function() {
-            $("#mainPage").hide(1000);
-            $("#memory").show(1000);
-        })
-    });
-    $(document).ready(function(){
-        $("#memoReturnBtn").click(function() {
-            $("#memory").hide(1000);
-            $("#mainPage").show(1000);
         })
     });
 

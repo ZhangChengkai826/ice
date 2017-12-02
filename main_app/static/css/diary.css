@@ -18,7 +18,7 @@ a:active{
 #top-fix-bar{
 	position:fixed;
 	float:left;
-	margin-top: -8px;
+	margin-top: 0.5%;
 	margin-left: -8px;
 	padding:0;
 	background-color: #000000;
@@ -35,6 +35,7 @@ a:active{
 	margin-left: 63%;
 	display:inline-block;
 	font-size: 20px;
+	margin-top: 1%;
 }
 #top-fix-inner{
 	display: inline-block;
@@ -57,7 +58,7 @@ a:active{
 	height:679px;
 	width:84%;
 	background-attachment: scroll;
-
+	padding-top: 3%;
 }
 #blog-input-title{
 	margin-left:5%;
@@ -87,4 +88,12 @@ a:active{
 	margin-bottom:1%;
 	margin-left: 5%;
 	border-width:0;
+}
+
+.hv-center {
+    margin: 15% 35%;
+    margin-top: 10%;
+    text-align: center;
+	color: white;
+	font-weight: 600;
 }

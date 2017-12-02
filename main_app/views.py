@@ -6,6 +6,7 @@ from . import models
 # Create your views here.
 def index(request):
     postData = request.POST
+    getData = request.GET
     fill_dict = {
         'username': None,
         'fName': None,
@@ -114,4 +115,63 @@ def index(request):
 
         return render(request, 'index.html', fill_dict)
 
+    if 'login' in getData:
+        username = getData['usn']
+
+        targetUser = models.APPUser.objects.get(username=username)
+
+        # Make sure the user is still logging in after editing the profile
+        fill_dict['successLogin'] = 1
+        # And the info are properly set
+        fill_dict['username'] = targetUser.username
+        fill_dict['fName'] = targetUser.fName
+        fill_dict['lName'] = targetUser.lName
+        fill_dict['gender'] = targetUser.gender
+        fill_dict['birY'] = targetUser.birthdayY
+        fill_dict['birM'] = targetUser.birthdayM
+        fill_dict['birD'] = targetUser.birthdayD
+        fill_dict['hobbies'] = targetUser.hobbies
+
+        fill_dict['openLogin'] = 0
+        return render(request, 'index.html', fill_dict)
+
     return render(request, 'index.html', fill_dict)
+
+def diary(request):
+    getData = request.GET
+    postData = request.POST
+
+    fill_dict = {
+        'username': getData['usn'],
+        'noticeSubmit': 0,
+        'diaries': None,
+        'hideInputs': 0,
+    }
+
+    if 'all' in getData:
+        username = getData['usn']
+        targetUser = models.APPUser.objects.get(username=username)
+        diaries = targetUser.diaries.all()
+        diaries_list = []
+        for d in diaries:
+            diaries_list.append({'title':d.title, 'content': d.content})
+        fill_dict['diaries'] = diaries_list
+        fill_dict['hideInputs'] = 1
+        return render(request, 'diary.html', fill_dict)
+
+    if 'author' in postData:
+        author = postData['author']
+        diaryTitle = postData['title']
+        diaryContent = postData['content']
+
+        diary = models.Diary.objects.create(
+            title=diaryTitle,
+            content=diaryContent,
+            author=models.APPUser.objects.get(username=author)
+        )
+        diary.save()
+
+        fill_dict['noticeSubmit'] = 1
+        return render(request, 'diary.html', fill_dict)
+
+    return render(request, 'diary.html', fill_dict)
