@@ -9,7 +9,6 @@
         <style type="text/css">
             body{
                 background-image: url({% static 'img/bgDiary0.jpg' %});
-                background-repeat: no-repeat;
                 background-size: 100%;
             }
             #blog{
@@ -51,7 +50,7 @@
 		<!--这里是故事板块-->
 		<div id="blog" style="z-index: 50;">
 			<!--后台在form标签中做一个action把提交的日记收集到数据库中,用户页面跳转到故事列表.html-->
-			<form method="post">
+			<form method="post" action="{% url 'main_app_diary' %}?usn={{ username }}">
                 {% csrf_token %}
 				<!--输入标题-->
                 <input type="hidden" name="author" value="{{ username }}">

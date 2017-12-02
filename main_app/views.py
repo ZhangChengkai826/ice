@@ -157,7 +157,6 @@ def diary(request):
             diaries_list.append({'title':d.title, 'content': d.content})
         fill_dict['diaries'] = diaries_list
         fill_dict['hideInputs'] = 1
-        return render(request, 'diary.html', fill_dict)
 
     if 'author' in postData:
         author = postData['author']
