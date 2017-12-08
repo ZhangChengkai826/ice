@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" type="text/css" />
+    <link href='http://fonts.font.im/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+<link href='http://fonts.font.im/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>    <title>ICE</title>
+</head>
+
+<body onload="init()">
+
+<div id="bg">
+    <img id="bgImg" src="{% static 'img/bgBegin.jpg' %}" >
+</div>
+
+<div id="avatar" style="display: none">
+    <img src="{% static 'img/avatar.png' %}">
+    <ul class="text-muted small list-unstyled" >
+        <li><strong>USERNAME</strong> {{ username }}</li>
+        <li><strong>FIRST NAME</strong> {{ fName }}</li>
+        <li><strong>LAST NAME</strong> {{ lName }}</li>
+        <li><strong>GENDER</strong> {{ gender }}</li>
+        <li><strong>BIRTHDAY</strong> {{ birY }} - {{ birM }} - {{ birD }}</li>
+        <li><strong>HOBBIES</strong> {{ hobbies }}</li>
+        <li><button class="btn" id="editBtn">Edit</button></li>
+    </ul>
+</div>
+
+<div id="mainPage" style="display: none">
+    <div class="stage">
+        <a href="{% url 'main_app_diary' %}?usn={{ username }}"><img id="diaryICO" src="{% static 'img/diaryICO.png' %}"></a>
+        <img id="photoICO" src="{% static 'img/photoICO.png' %}">
+    </div>
+</div>
+
+<form role="form" class="hv-center" id="loginForm" method="post" onsubmit="return check()" style="display: none;">
+    {% csrf_token %}
+    <img src="{% static 'img/logo.png' %}">
+    <h1>往昔回忆·ICE</h1>
+    <div class="form-group">
+        <label for="username">USERNAME</label>
+        <input type="text" class="form-control" id="username" name="username" />
+    </div>
+    <div class="form-group">
+        <label for="pwd">PASSWORD</label>
+        <input type="password" class="form-control" id="pwd" name="pwd" />
+    </div>
+    <button type="button" class="btn" id="signUpBtn">SIGN UP</button>
+    <button type="submit" class="btn">LOG IN</button>
+</form>
+
+<form style="display: none" role="form" class="hv-center" id="signupForm" method="post" onsubmit="return check_s()">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username_s">USERNAME</label>
+        <input type="text" class="form-control" id="username_s" name="username_s" />
+    </div>
+    <div class="form-group">
+        <label for="pwd_s">PASSWORD</label>
+        <input type="password" class="form-control" id="pwd_s" name="pwd_s" />
+    </div>
+    <div class="form-group">
+        <label for="rpwd_s">REPEAT YOUR PASSWORD</label>
+        <input type="password" class="form-control" id="rpwd_s" name="rpwd_s" />
+    </div>
+    <button type="button" class="btn" id="returnBtn">RETURN</button>
+    <button type="submit" class="btn" id="createAcctBtn">CREATE YOUR ACCOUNT</button>
+</form>
+
+<form role="form" class="hv-center" id="editForm" method="post" style="display: none">
+    {% csrf_token %}
+    <input type="hidden" id="username_e" name="username_e" />
+    <div class="form-group">
+        <label for="fName">FIRST NAME</label>
+        <input type="text" class="form-control" id="fName" name="fName" />
+    </div>
+    <div class="form-group">
+        <label for="lName">LAST NAME</label>
+        <input type="text" class="form-control" id="lName" name="lName" />
+    </div>
+    <div class="form-group">
+        <label class="editGender">MALE<input style="background-color: transparent"  type="radio" class="form-control" name="gender" value="MALE" id="genderM" /></label>
+        <label class="editGender">FEMALE<input style="background-color: transparent"  type="radio" class="form-control" name="gender" value="FEMALE" id="genderW" /></label>
+        <label class="editGender">SECRET<input style="background-color: transparent"  type="radio" class="form-control" name="gender" value="SECRET" id="genderS" /></label>
+    </div>
+    <div class="form-group">
+        <label>BIRTHDAY
+            <input id="birthday" type="date" class="form-control" name="birthday"/>
+        </label>
+    </div>
+    <div class="form-group">
+        <label>HOBBIES
+            <input type="text" class="form-control" name="hobbies" id="hobbies"/>
+        </label>
+    </div>
+    <button type="button" class="btn" id="editReturnBtn">RETURN</button>
+    <button type="submit" class="btn">SAVE</button>
+</form>
+
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script>
+    // Go to Signup form
+    $(document).ready(function(){
+        $("#signUpBtn").click(function(){
+            $("#loginForm").hide(1000);
+            $("#signupForm").show(1000);
+        })
+    });
+
+    // From Signup form to Login form
+    $(document).ready(function(){
+        $("#returnBtn").click(function(){
+            $("#signupForm").hide(1000);
+            $("#loginForm").show(1000)
+        })
+    });
+
+    // Check the login form
+    function check() {
+        if ($("#username").val() === ""){
+            alert("Please enter your username!");
+            return false;
+        }
+        if ($("#pwd").val() === ""){
+            alert("Please enter your password!");
+            return false;
+        }
+        return true;
+    }
+
+    // Check the signup form
+    function check_s() {
+        if ($("#username_s").val() === ""){
+            alert("Please specify your username!");
+            return false;
+        }
+        if ($("#pwd_s").val() === ""){
+            alert("Please specify your password!");
+            return false;
+        }
+        if (!($("#pwd_s").val() === $("#rpwd_s").val())) {
+            alert("Password is not the same!");
+            return false;
+        }
+        return true;
+    }
+
+    // When loading the page, call this
+    function init() {
+        if (Boolean({{ repeatUName }}) === true){
+            $("#signupForm").show(1000);
+            alert("This username has been registered!")
+        }
+        if (Boolean({{ noMatchUName }}) === true){
+            $("#loginForm").show(1000);
+            alert("No matching username found!")
+        }
+        if (Boolean({{ wrongPwd }}) === true){
+            $("#loginForm").show(1000);
+            alert("Wrong password, please try again!")
+        }
+        if (Boolean({{ successLogin }}) === true) {
+            $("#bgImg").attr("src", "{% static 'img/bg2.gif' %}");
+            $("#avatar").delay(1000).show(1000);
+            $("#mainPage").delay(1000).show(1000);
+            $("#loginForm").delay(1000).hide(1000, function () {
+                $("#bgImg").attr("src", "{% static 'img/bgEnd.jpg' %}");
+            })
+        }
+        if (Boolean({{ openLogin }}) === true) {
+            $("#loginForm").show(1000);
+        }
+    }
+
+    // When video end, call this.
+    function showMainPageAfterPlay() {
+        $("#avatar").show(1000);
+        $("#mainPage").show(1000)
+    }
+
+    // open & close user info
+    $(document).ready(function(){
+        $("#avatar img").click(function() {
+            $("#avatar ul").slideToggle(1000)
+        })
+    });
+
+    // EditForm helper functions
+    $(document).ready(function(){
+        $("#editBtn").click(function() {
+            $("#mainPage").hide(1000);
+            $("#editForm").show(1000);
+            $("#username_e").val("{{ username }}");
+            $("#fName").val("{{ fName }}");
+            $("#lName").val("{{ lName }}");
+            setEditGender();
+            setEditBir();
+            $("#hobbies").val("{{ hobbies }}");
+        })
+    })
+    function setEditGender() {
+        var gender = "{{ gender }}";
+        if (gender === "MALE"){
+            $("#genderM").attr("checked", true);
+        }
+        else if (gender === "FEMALE"){
+            $("#genderW").attr("checked", true);
+        }
+        else {
+            $("#genderS").attr("checked", true);
+        }
+    }
+    function setEditBir() {
+        if ("{{ birM }}".length === 1){
+            var birM = "0"+"{{ birM }}";
+        }
+
+        if ("{{ birD }}".length === 1){
+            var birD = "0"+"{{ birD }}";
+        }
+        else {
+            var birD = {{ birD }};
+        }
+
+        $("#birthday").val("{{ birY }}-"+birM+"-"+birD);
+    }
+
+    // From editForm to MainPage
+    $(document).ready(function(){
+        $("#editReturnBtn").click(function(){
+            $("#editForm").hide(1000);
+            $("#mainPage").show(1000)
+        })
+    });
+
+</script>
+</body>
+</html>
