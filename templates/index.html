@@ -12,7 +12,10 @@
 <body onload="init()">
 
 <div id="bg">
-    <video id="bgVideo" src="{% static 'img/bg2.mp4' %}" onended="showMainPageAfterPlay()"></video>
+    <video id="bgVideo" onended="showMainPageAfterPlay()">
+        <source src="{% static 'img/bg2.mp4' %}">
+        <source src="{% static 'img/bg2.webm' %}">
+    </video>
 </div>
 
 <div id="avatar" style="display: none">
