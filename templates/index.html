@@ -106,6 +106,7 @@
 <script src="{% static 'js/bootstrap.js' %}"></script>
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/shake.js' %}"></script>
 <script>
     // Go to Signup form
     $(document).ready(function(){
@@ -178,7 +179,9 @@
     // When video end, call this.
     function showMainPageAfterPlay() {
         $("#avatar").fadeIn(1000);
-        $("#mainPage").fadeIn(1000)
+        $("#mainPage").fadeIn(1000);
+        $("#diaryICO").delay(750).shake(2, 10, 400);
+        $("#photoICO").delay(1500).shake(2, 10, 400);
     }
 
     // open & close user info
@@ -235,6 +238,19 @@
             $("#mainPage").show(1000)
         })
     });
+
+    // Icon Hover
+    $(document).ready(function(){
+        $("#photoICO").hover(function(){
+            $("#photoICO").shake(1, 10, 100);
+        })
+    });
+    $(document).ready(function(){
+        $("#diaryICO").hover(function(){
+            $("#diaryICO").shake(1, 10, 100);
+        })
+    });
+
 
 </script>
 </body>
