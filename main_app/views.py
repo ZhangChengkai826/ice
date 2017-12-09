@@ -57,14 +57,20 @@ def index(request):
         # Test whether the username is in the Database
         if not models.APPUser.objects.filter(username=username):
             fill_dict['noMatchUName'] = 1
-            return render(request, 'index.html', fill_dict)
+            if checkMobile(request):
+                return render(request, 'index_mobile.html', fill_dict)
+            else:
+                return render(request, 'index.html', fill_dict)
 
         pwd = postData['pwd']
         targetUser = models.APPUser.objects.get(username=username)
         # Test whether the password is right
         if pwd != targetUser.password:
             fill_dict['wrongPwd'] = 1
-            return render(request, 'index.html', fill_dict)
+            if checkMobile(request):
+                return render(request, 'index_mobile.html', fill_dict)
+            else:
+                return render(request, 'index.html', fill_dict)
 
         # Successfully log in
         fill_dict['successLogin'] = 1
@@ -89,7 +95,10 @@ def index(request):
         # Test whether the username has been registered
         if models.APPUser.objects.filter(username=username_s):
             fill_dict['repeatUName'] = 1
-            return render(request, 'index.html', fill_dict)
+            if checkMobile(request):
+                return render(request, 'index_mobile.html', fill_dict)
+            else:
+                return render(request, 'index.html', fill_dict)
         pwd_s = postData['pwd_s']
         appUser = models.APPUser.objects.create(
             username=username_s,
