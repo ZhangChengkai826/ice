@@ -217,3 +217,6 @@ def diary(request):
         return render(request, 'diary.html', fill_dict)
 
     return render(request, 'diary.html', fill_dict)
+
+def photo(request):
+    return render(request, 'photo.html')

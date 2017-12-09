@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My photos</title>
+    {% load staticfiles %}
+    <style>
+    h1 {
+        font-size:100px;
+        opacity:0.4;
+        text-align: center;
+        padding-left:40%;
+        padding-right:40%;
+}
+    body {
+        background-image: url({% static 'img/pho0.jpg' %});
+    }
+    img:hover{
+        opacity:0.5;
+    }
+    img {
+        opacity: 1;
+        padding:10px;border:1px solid #000;
+        -moz-box-shadow:3px 3px 4px #000;
+        -webkit-box-shadow:3px 3px 4px #000;
+        box-shadow:3px 3px 4px #000;
+        background:#fff;
+        filter:progid:DXImageTransform.Microsoft.Shadow(Strength=4,Direction=135,Color='#000000');
+    }
+    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/photo.css' %}" />
+</head>
+<body >
+<div id="1"><img src="{% static 'img/pho1.jpg' %}"></div>
+<div id="2"><img src="{% static 'img/pho2.jpg' %}"></div>
+<div id="3"><img src="{% static 'img/pho3.jpg' %}"></div>
+<div id="4"><img src="{% static 'img/pho4.jpg' %}"></div>
+<div id="5"><img src="{% static 'img/pho5.jpg' %}"></div>
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/freeDragPlugin.js' %}"></script>
+<script>$("#1").freeDrag();</script>
+<script>$("#2").freeDrag();</script>
+<script>$("#3").freeDrag();</script>
+<script>$("#4").freeDrag();</script>
+<script>$("#5").freeDrag();</script>
+<h1>
+PHOTOS
+</h1>
+</body>
+</html>

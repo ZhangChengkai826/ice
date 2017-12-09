@@ -35,7 +35,7 @@
 <div id="mainPage" style="display: none">
     <div class="stage">
         <a href="{% url 'main_app_diary' %}?usn={{ username }}"><img id="diaryICO" src="{% static 'img/diaryICO.png' %}"></a>
-        <img id="photoICO" src="{% static 'img/photoICO.png' %}">
+        <a href="{% url 'main_app_photo' %}?usn={{ username }}"><img id="photoICO" src="{% static 'img/photoICO.png' %}"></a>
     </div>
 </div>
 
