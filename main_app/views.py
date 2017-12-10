@@ -228,4 +228,8 @@ def diary(request):
     return render(request, 'diary.html', fill_dict)
 
 def photo(request):
-    return render(request, 'photo.html')
+    getData = request.GET;
+    fill_dict = {
+        'username': getData['usn'],
+    }
+    return render(request, 'photo.html', fill_dict)
