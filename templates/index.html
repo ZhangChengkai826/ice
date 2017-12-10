@@ -19,6 +19,9 @@
     </video>
 </div>
 
+<div>
+    <img id="check" src="{% static 'img/check.png' %}" style="display: none; position: fixed;top:20%;left:33%;z-index:200;width: 150%;">
+</div>
 
 
 <div id="avatar" style="display: none">
@@ -30,6 +33,7 @@
         <li><strong>GENDER</strong> {{ gender }}</li>
         <li><strong>BIRTHDAY</strong> {{ birY }} - {{ birM }} - {{ birD }}</li>
         <li><strong>HOBBIES</strong> {{ hobbies }}</li>
+        <li><button class="btn" id="checkBtn">Sign In</button></li>
         <li><button class="btn" id="editBtn">Edit</button></li>
     </ul>
 </div>
@@ -110,6 +114,17 @@
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/shake.js' %}"></script>
 <script>
+    // Handle check(sign in)
+    $(document).ready(function(){
+        $("#checkBtn").click(function(){
+            $("#check").css("display","block")
+            $("#check").animate({
+                width:'50%'
+            })
+            $("#check").delay(2000).fadeOut(2000);
+        })
+    });
+
     // Go to Signup form
     $(document).ready(function(){
         $("#signUpBtn").click(function(){
